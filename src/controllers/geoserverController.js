@@ -1,4 +1,3 @@
-// src/controllers/geoserverController.js
 import fetch from "node-fetch";
 import proj4 from "proj4";
 import PDFDocument from "pdfkit";
@@ -8,6 +7,16 @@ import path from "path"; // Importar 'path' para manejar rutas
 const wgs84 = "+proj=longlat +datum=WGS84 +no_defs";
 const utm32717 = "+proj=utm +zone=17 +south +datum=WGS84 +units=m +no_defs";
 const buffer = 50; // Buffer para bbox
+
+// Función para aplicar timeout a las solicitudes fetch
+const fetchWithTimeout = (url, options = {}, timeout = 30000) => {
+  return Promise.race([
+    fetch(url, options),
+    new Promise((_, reject) =>
+      setTimeout(() => reject(new Error("Request timed out")), timeout)
+    ),
+  ]);
+};
 
 export const getMap = async (req, res) => {
   // Obtenemos longitud y latitud de los parámetros de consulta
@@ -40,7 +49,8 @@ export const getMap = async (req, res) => {
   console.log(url);
 
   try {
-    const response = await fetch(url);
+    // Usar la función fetchWithTimeout con un timeout de 30 segundos (30000 ms)
+    const response = await fetchWithTimeout(url, {}, 30000);
     if (!response.ok) throw new Error("Error en la consulta WMS");
 
     const data = await response.json();
@@ -63,12 +73,10 @@ export const getMap = async (req, res) => {
         .json({ message: "No se encontraron características." });
     }
   } catch (error) {
-    return res
-      .status(500)
-      .json({
-        error: "Error fetching map from GeoServer",
-        details: error.message,
-      });
+    return res.status(500).json({
+      error: "Error fetching map from GeoServer",
+      details: error.message,
+    });
   }
 };
 
