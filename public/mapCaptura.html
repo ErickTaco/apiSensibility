@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Captura de Mapa</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/ol@latest/ol.css"
+      type="text/css"
+    />
+    <style>
+      #map {
+        width: 800px;
+        height: 600px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/ol@latest/dist/ol.js"></script>
+    <script>
+      // Obtener parámetros de la URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const longitude = parseFloat(urlParams.get("longitude"));
+      const latitude = parseFloat(urlParams.get("latitude"));
+      const layerName = urlParams.get("layer");
+      console.log(longitude, latitude, layerName);
+      // Crear el mapa
+      const map = new ol.Map({
+        target: "map",
+        layers: [
+          new ol.layer.Tile({
+            source: new ol.source.OSM(),
+          }),
+          new ol.layer.Tile({
+            source: new ol.source.TileWMS({
+              url: "http://45.136.18.138:8080/geoserver/Ceer/wms",
+              params: {
+                LAYERS: layerName,
+                TILED: true,
+              },
+              serverType: "geoserver",
+              transition: 0,
+            }),
+            opacity: 0.6, // Ajuste de opacidad
+          }),
+        ],
+        view: new ol.View({
+          center: ol.proj.fromLonLat([longitude, latitude]),
+          zoom: 11,
+        }),
+      });
+
+      // Crear y agregar el marcador en la ubicación dada
+      const marker = new ol.Feature({
+        geometry: new ol.geom.Point(ol.proj.fromLonLat([longitude, latitude])),
+      });
+
+      const markerLayer = new ol.layer.Vector({
+        source: new ol.source.Vector({
+          features: [marker],
+        }),
+        style: new ol.style.Style({
+          image: new ol.style.Circle({
+            radius: 7,
+            fill: new ol.style.Fill({ color: "blue" }),
+            stroke: new ol.style.Stroke({ color: "white", width: 2 }),
+          }),
+        }),
+      });
+
+      map.addLayer(markerLayer);
+    </script>
+  </body>
+</html>

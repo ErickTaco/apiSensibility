@@ -7,6 +7,7 @@ const app = express();
 
 // Habilita CORS para todas las rutas
 app.use(cors());
+app.use(express.static("public"));
 
 // Rutas
 app.use("/api/geoserver", geoserverRoutes);

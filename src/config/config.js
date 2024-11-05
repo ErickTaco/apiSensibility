@@ -1,11 +1,9 @@
-import dotenv from "dotenv";
+import { config } from "dotenv";
+config();
 
-dotenv.config();
-
-const config = {
-  GEO_SERVER_URL:
-    process.env.GEO_SERVER_URL || "http://45.136.18.138:8080/geoserver",
-  LAYER_NAME: process.env.LAYER_NAME || "Ceer:humedal_ramsar",
-};
-
-export default config;
+export const PORT = process.env.PORT || 3001;
+export const DB_USER = process.env.DB_USER || "root";
+export const DB_PASSWORD = process.env.DB_PASSWORD || "Admin@12345";
+export const DB_HOST = process.env.DB_HOST || "45.136.18.138";
+export const DB_DATABASE = process.env.DB_DATABASE || "riesgos";
+export const DB_PORT = process.env.DB_PORT || 3306;

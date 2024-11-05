@@ -1,0 +1,66 @@
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Editar Información</title>
+  </head>
+  <body>
+    <h1>Editar Información para Generar PDF</h1>
+    <form id="pdfForm">
+      <input
+        type="hidden"
+        id="longitude"
+        name="longitude"
+        value="<%= longitude %>"
+      />
+      <input
+        type="hidden"
+        id="latitude"
+        name="latitude"
+        value="<%= latitude %>"
+      />
+      <input type="hidden" id="layer" name="layer" value="<%= layer %>" />
+
+      <label for="color">Color:</label>
+      <select id="color" name="color">
+        <option value="Rojo">Rojo</option>
+        <option value="Amarillo">Amarillo</option>
+        <option value="Verde">Verde</option>
+      </select>
+
+      <label for="riesgo">Riesgo:</label>
+      <input type="text" id="riesgo" name="riesgo" required />
+
+      <button type="submit">Generar PDF</button>
+    </form>
+
+    <script>
+      document
+        .getElementById("pdfForm")
+        .addEventListener("submit", async (event) => {
+          event.preventDefault();
+
+          const longitude = document.getElementById("longitude").value;
+          const latitude = document.getElementById("latitude").value;
+          const layer = document.getElementById("layer").value;
+          const color = document.getElementById("color").value;
+          const riesgo = document.getElementById("riesgo").value;
+
+          const response = await fetch("/api/geoserver/generate-pdf", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ color, riesgo, layer, longitude, latitude }),
+          });
+
+          const data = await response.json();
+          // Manejar la respuesta (por ejemplo, mostrar la URL del PDF)
+          alert(data.message);
+          if (data.pdfUrl) {
+            window.location.href = data.pdfUrl; // Redirigir al PDF generado
+          }
+        });
+    </script>
+  </body>
+</html>

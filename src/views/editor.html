@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Descargar Archivos</title>
+    <script>
+      function descargarArchivos() {
+        // Obtener los parámetros de la URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const docUrl = urlParams.get("docUrl");
+        const xmlUrl = urlParams.get("xmlUrl");
+        const imgUrl = "/api/geoserver/downloadImage";
+        // Descargar el documento Word
+        if (docUrl) {
+          window.location.href = docUrl;
+        }
+
+        // Temporizador para descargar el archivo XML después de 2 segundos
+        if (xmlUrl) {
+          setTimeout(() => {
+            window.location.href = xmlUrl;
+          }, 2000);
+        }
+
+        if (imgUrl) {
+          setTimeout(() => {
+            window.location.href = imgUrl;
+          }, 5000);
+        }
+      }
+
+      // Iniciar la descarga cuando la página cargue
+      window.onload = descargarArchivos;
+    </script>
+  </head>
+  <body>
+    <h1>Descargando archivos...</h1>
+  </body>
+</html>

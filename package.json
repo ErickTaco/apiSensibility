@@ -12,12 +12,26 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^1.7.7",
+    "canvas": "^2.11.2",
     "cors": "^2.8.5",
+    "docxtemplater": "^3.51.2",
     "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
     "express": "^4.21.1",
     "express-validator": "^7.2.0",
+    "html-pdf": "^3.0.1",
+    "jsdom": "^25.0.1",
+    "multer": "^1.4.5-lts.1",
+    "mysql2": "^3.11.3",
     "node-fetch": "^3.3.2",
+    "node-html-to-image": "^5.0.0",
+    "path": "^0.12.7",
     "pdfkit": "^0.15.0",
-    "proj4": "^2.12.1"
+    "pizzip": "^3.1.7",
+    "proj4": "^2.14.0",
+    "puppeteer": "^23.6.1",
+    "sequelize": "^6.37.5",
+    "sharp": "^0.33.5",
+    "xml2js": "^0.6.2"
   }
 }
