@@ -8,6 +8,12 @@ import {
   pruebaImagen,
   ejemplo,
 } from "../controllers/geoserverController.js";
+
+import {
+  datos,
+  validateUpdateST,
+  updateST,
+} from "../controllers/consultaController.js";
 import path from "path";
 import fs from "fs";
 import { fileURLToPath } from "url";
@@ -26,6 +32,7 @@ router.get("/getMap", getMap);
 
 router.get("/prueba", pruebaImagen);
 router.get("/prueba2", ejemplo);
+router.get("/datos", datos);
 
 // Ruta para manejar la carga de documentos
 router.get("/uploadDocument", uploadDocument); // Nueva ruta para mostrar el formulario de carga
@@ -85,5 +92,5 @@ router.get("/editor", (req, res) => {
 router.get("/descargar", (req, res) => {
   res.sendFile(path.join(__dirname, "../views/editor.html"));
 });
-
+router.put("/update-st", updateST);
 export default router;
