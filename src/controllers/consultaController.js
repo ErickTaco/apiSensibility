@@ -19,10 +19,20 @@ export const datos = async function (req, res) {
     "SELECT a04_mapa.*, r03_riesgo_mapas.* FROM r03_riesgo_mapas INNER JOIN a04_mapa ON a04_mapa.a04_id = r03_riesgo_mapas.a04_id  WHERE a04_mapa.a04_alerta = 1  AND r03_riesgo_mapas.r01_id = 3606 ORDER BY a04_mapa.a04_orden;"
   );
   // Mapear los datos originales para aplicar el formato deseado
+
+  const datosQuemados = {
+    id: 99,
+    nombre: "RIESGO TOTAL",
+    descripcion: "Suma ponderada del riesgo de cada mapa",
+    ponderacion: 0,
+    rterritorial: 1,
+    fuente: "Cálculo interno",
+    orden: 99,
+  };
   const datosFormateados = datos.map((data, index) =>
     formatearRespuesta(data, index)
   );
-
+  datosFormateados.push(datosQuemados);
   res.json(datosFormateados);
 };
 
