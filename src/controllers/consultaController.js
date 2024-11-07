@@ -1,6 +1,6 @@
 import { pool } from "../config/Db.js";
 import { validationResult, body } from "express-validator";
-
+import { formatearRespuesta } from "../model/R03Riesgo_mapas.js";
 // geoUtils.js
 
 export const datos = async function (req, res) {
@@ -15,10 +15,15 @@ export const datos = async function (req, res) {
   console.log(utmCoords);
   console.log(zona);
 
-  const [events] = await pool.query(
-    "SELECT a04_mapa.*, r03_riesgo_mapas.* FROM r03_riesgo_mapas INNER JOIN a04_mapa ON a04_mapa.a04_id = r03_riesgo_mapas.a04_id  WHERE a04_mapa.a04_alerta = 1  AND r03_riesgo_mapas.r01_id = 4028 ORDER BY a04_mapa.a04_orden;"
+  const [datos] = await pool.query(
+    "SELECT a04_mapa.*, r03_riesgo_mapas.* FROM r03_riesgo_mapas INNER JOIN a04_mapa ON a04_mapa.a04_id = r03_riesgo_mapas.a04_id  WHERE a04_mapa.a04_alerta = 1  AND r03_riesgo_mapas.r01_id = 3606 ORDER BY a04_mapa.a04_orden;"
   );
-  res.json(events);
+  // Mapear los datos originales para aplicar el formato deseado
+  const datosFormateados = datos.map((data, index) =>
+    formatearRespuesta(data, index)
+  );
+
+  res.json(datosFormateados);
 };
 
 // Middleware de validación
